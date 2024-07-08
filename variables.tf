@@ -41,7 +41,7 @@ variable "databases_to_share" {
   type = list(object({
     name        = string
     target_db   = string
-    permissions = optional(list(string), ["DESCRIBE", "CREATE_TABLE"])
+    permissions = optional(list(string), ["DESCRIBE"])
   }))
   default = []
 }
@@ -53,7 +53,7 @@ variable "tables_to_share" {
     name        = string
     target_db   = string
     target_tbl  = string
-    permissions = optional(list(string), ["SELECT", "INSERT"])
+    permissions = optional(list(string), ["SELECT"])
     column_permissions = optional(list(object({
       name        = string
       columns     = list(string)
