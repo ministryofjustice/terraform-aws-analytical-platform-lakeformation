@@ -7,14 +7,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_external"></a> [external](#requirement\_external) | >= 2.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-| <a name="provider_aws.target"></a> [aws.target](#provider\_aws.target) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_aws.target"></a> [aws.target](#provider\_aws.target) | ~> 5.0 |
 
 ## Modules
 
