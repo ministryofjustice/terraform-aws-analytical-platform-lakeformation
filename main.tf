@@ -1,17 +1,5 @@
-
-
-# resource "aws_lakeformation_data_lake_settings" "this" {
-#     count      = var.lake_formation_settings != {} ? 1 : 0
-#   admins     = concat([data.aws_iam_session_context.current.issuer_arn], var.lake_formation_settings.data_lake_admins)
-#   catalog_id = try(var.glue_catalogue, data.aws_caller_identity.current.account_id)
-
-
-# # This resource is needed to implictly override the default Lake Formation behaviour that forces IAM-only anagement of new table and database permissions
-# # ref: https://docs.aws.amazon.com/lake-formation/latest/dg/change-settings.html
-
-# }
-
 resource "aws_lakeformation_resource" "data_location" {
+  provider = aws.source
   for_each = {
     for idx, loc in var.data_locations : loc.data_location => loc
     if loc.register == true
@@ -24,6 +12,7 @@ resource "aws_lakeformation_resource" "data_location" {
 }
 
 resource "aws_lakeformation_permissions" "data_location_share" {
+  provider = aws.source
   for_each = {
     for idx, loc in var.data_locations : loc.data_location => loc
     if loc.share == true
@@ -40,6 +29,7 @@ resource "aws_lakeformation_permissions" "data_location_share" {
 }
 
 resource "aws_lakeformation_permissions" "database_share" {
+  provider = aws.source
   for_each = {
     for db in var.databases_to_share : db.name => db
   }
@@ -56,6 +46,7 @@ resource "aws_lakeformation_permissions" "database_share" {
 }
 
 resource "aws_lakeformation_permissions" "table_share" {
+  provider = aws.source
   for_each = {
     for db in var.databases_to_share : db.name => db
   }
