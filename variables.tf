@@ -1,9 +1,3 @@
-variable "glue_catalogue" {
-
-  type    = string
-  default = null
-}
-
 variable "data_locations" {
   description = "List of data locations (currently S3 buckets) to share with target account"
   type = list(object({
@@ -46,19 +40,19 @@ variable "databases_to_share" {
   default = []
 }
 
-variable "tables_to_share" {
-  description = "List of tables to share with target account"
-  type = list(object({
-    database    = string
-    name        = string
-    target_db   = string
-    target_tbl  = string
-    permissions = optional(list(string), ["SELECT"])
-    column_permissions = optional(list(object({
-      name        = string
-      columns     = list(string)
-      permissions = list(string)
-    })), [])
-  }))
-  default = []
-}
+# variable "tables_to_share" {
+#   description = "List of tables to share with target account"
+#   type = list(object({
+#     database    = string
+#     name        = string
+#     target_db   = string
+#     target_tbl  = string
+#     permissions = optional(list(string), ["SELECT"])
+#     column_permissions = optional(list(object({
+#       name        = string
+#       columns     = list(string)
+#       permissions = list(string)
+#     })), [])
+#   }))
+#   default = []
+# }
