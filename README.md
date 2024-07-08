@@ -41,9 +41,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_data_locations"></a> [data\_locations](#input\_data\_locations) | List of data locations (currently S3 buckets) to share with target account | <pre>list(object({<br>    data_location = string<br>    hybrid_mode   = optional(bool, null)<br>    register      = optional(bool, null)<br>    share         = optional(bool, true)<br>  }))</pre> | `[]` | no |
-| <a name="input_databases_to_share"></a> [databases\_to\_share](#input\_databases\_to\_share) | List of databases to share with target account | <pre>list(object({<br>    name        = string<br>    target_db   = string<br>    permissions = optional(list(string), ["DESCRIBE", "CREATE_TABLE"])<br>  }))</pre> | `[]` | no |
+| <a name="input_databases_to_share"></a> [databases\_to\_share](#input\_databases\_to\_share) | List of databases to share with target account | <pre>list(object({<br>    name        = string<br>    target_db   = string<br>    permissions = optional(list(string), ["DESCRIBE"])<br>  }))</pre> | `[]` | no |
 | <a name="input_glue_catalogue"></a> [glue\_catalogue](#input\_glue\_catalogue) | n/a | `string` | `null` | no |
-| <a name="input_tables_to_share"></a> [tables\_to\_share](#input\_tables\_to\_share) | List of tables to share with target account | <pre>list(object({<br>    database    = string<br>    name        = string<br>    target_db   = string<br>    target_tbl  = string<br>    permissions = optional(list(string), ["SELECT", "INSERT"])<br>    column_permissions = optional(list(object({<br>      name        = string<br>      columns     = list(string)<br>      permissions = list(string)<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_tables_to_share"></a> [tables\_to\_share](#input\_tables\_to\_share) | List of tables to share with target account | <pre>list(object({<br>    database    = string<br>    name        = string<br>    target_db   = string<br>    target_tbl  = string<br>    permissions = optional(list(string), ["SELECT"])<br>    column_permissions = optional(list(object({<br>      name        = string<br>      columns     = list(string)<br>      permissions = list(string)<br>    })), [])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
