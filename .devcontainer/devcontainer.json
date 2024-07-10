@@ -1,0 +1,16 @@
+{
+  "name": "terraform-aws-analytical-platform-lakeformation",
+  "image": "ghcr.io/ministryofjustice/devcontainer-base:latest",
+  "features": {
+    "ghcr.io/ministryofjustice/devcontainer-feature/terraform:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "GitHub.vscode-github-actions",
+        "GitHub.vscode-pull-request-github"
+      ]
+    }
+  }
+}

@@ -1,25 +1,29 @@
 ---
-name: Generate Terraform README docs
+name: Generate Terraform README Documentation
+
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 permissions: {}
 
 jobs:
-  docs:
+  generate-docs:
+    name: Generate Terraform README Documentation
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - name: Checkout
+      id: checkout
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-    - name: Render terraform docs and push changes back to PR
+    - name: Render Terraform documentation and push changes back to pull request
       uses: terraform-docs/gh-actions@e47bfa196e79fa50987ef391be236d9d97b0c786 # v1.2.0
       with:
         working-dir: .
