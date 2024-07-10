@@ -33,26 +33,21 @@ variable "data_locations" {
 variable "databases_to_share" {
   description = "List of databases to share with target account"
   type = list(object({
-    name        = string
-    target_db   = string
-    permissions = optional(list(string), ["DESCRIBE"])
+    name             = string
+    permissions      = optional(list(string), ["DESCRIBE"])
+    share_all_tables = optional(bool, false)
   }))
   default = []
 }
 
-# variable "tables_to_share" {
-#   description = "List of tables to share with target account"
-#   type = list(object({
-#     database    = string
-#     name        = string
-#     target_db   = string
-#     target_tbl  = string
-#     permissions = optional(list(string), ["SELECT"])
-#     column_permissions = optional(list(object({
-#       name        = string
-#       columns     = list(string)
-#       permissions = list(string)
-#     })), [])
-#   }))
-#   default = []
-# }
+variable "tables_to_share" {
+  description = "List of tables to share with target account"
+  type = list(object({
+    database    = string
+    name        = string
+    target_db   = string
+    target_tbl  = optional(string, null)
+    permissions = optional(list(string), ["SELECT"])
+  }))
+  default = []
+}

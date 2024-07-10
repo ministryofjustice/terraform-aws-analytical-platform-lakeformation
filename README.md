@@ -13,7 +13,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_aws.source"></a> [aws.source](#provider\_aws.source) | ~> 5.0 |
 | <a name="provider_aws.target"></a> [aws.target](#provider\_aws.target) | ~> 5.0 |
 
 ## Modules

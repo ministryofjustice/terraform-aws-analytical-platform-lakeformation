@@ -15,7 +15,7 @@ resource "aws_lakeformation_permissions" "data_location_share" {
   provider = aws.source
   for_each = {
     for idx, loc in var.data_locations : loc.data_location => loc
-    if loc.share == true
+    if loc.share && local.share_cross_account #no need to share data location if it's in the same account
   }
 
   principal                     = data.aws_caller_identity.target.account_id
@@ -32,6 +32,7 @@ resource "aws_lakeformation_permissions" "database_share" {
   provider = aws.source
   for_each = {
     for db in var.databases_to_share : db.name => db
+    if local.share_cross_account #no need to share database if it's in the same account
   }
 
   principal                     = data.aws_caller_identity.target.account_id
@@ -45,10 +46,11 @@ resource "aws_lakeformation_permissions" "database_share" {
   depends_on = [aws_lakeformation_permissions.data_location_share]
 }
 
-resource "aws_lakeformation_permissions" "table_share" {
+resource "aws_lakeformation_permissions" "table_share_all" {
   provider = aws.source
   for_each = {
     for db in var.databases_to_share : db.name => db
+    if local.share_cross_account && db.share_all_tables #no need to share table if it's in the same account
   }
 
   principal                     = data.aws_caller_identity.target.account_id
@@ -64,7 +66,27 @@ resource "aws_lakeformation_permissions" "table_share" {
   depends_on = [aws_lakeformation_permissions.database_share]
 }
 
-resource "aws_glue_catalog_database" "target_account_resource_link" {
+resource "aws_lakeformation_permissions" "table_share_selected" {
+  provider = aws.source
+  for_each = {
+    for tbl in var.tables_to_share : tbl.name => tbl
+    if local.share_cross_account #no need to share table if it's in the same account
+  }
+
+  principal                     = data.aws_caller_identity.target.account_id
+  permissions                   = each.value.permissions
+  permissions_with_grant_option = each.value.permissions
+
+
+  table {
+    database_name = each.value.database
+    name          = each.value.name
+  }
+
+  depends_on = [aws_lakeformation_permissions.database_share]
+}
+
+resource "aws_glue_catalog_database" "target_account_database_resource_link" {
   provider = aws.target
   for_each = {
     for db in var.databases_to_share : db.name => db
@@ -78,5 +100,24 @@ resource "aws_glue_catalog_database" "target_account_resource_link" {
     region        = data.aws_region.current.name
   }
 
-  depends_on = [aws_lakeformation_permissions.table_share]
+  depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
+}
+
+resource "aws_glue_catalog_table" "target_account_table_resource_link" {
+  provider = aws.target
+  for_each = {
+    for tbl in var.tables_to_share : tbl.name => tbl
+  }
+
+  name          = try(each.value.target_tbl, "${each.key}_resource_link")
+  database_name = each.value.target_db
+
+  target_table {
+    name          = each.key
+    catalog_id    = data.aws_caller_identity.current.account_id
+    database_name = each.value.database
+    region        = data.aws_region.current.name
+  }
+
+  depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
 }
