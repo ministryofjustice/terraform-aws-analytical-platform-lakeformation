@@ -47,7 +47,7 @@ variable "tables_to_share" {
     name        = string
     target_db   = string
     target_tbl  = optional(string, null)
-    permissions = optional(list(string), ["SELECT"])
+    permissions = optional(list(string), ["SELECT", "DESCRIBE"])
   }))
   default = []
 }
