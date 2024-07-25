@@ -13,7 +13,6 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
 | <a name="provider_aws.source"></a> [aws.source](#provider\_aws.source) | ~> 5.0 |
 | <a name="provider_aws.target"></a> [aws.target](#provider\_aws.target) | ~> 5.0 |
 
@@ -25,8 +24,8 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_glue_catalog_database.database_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
 | [aws_glue_catalog_database.target_account_database_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
-| [aws_glue_catalog_database.target_database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
 | [aws_glue_catalog_table.target_account_table_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_table) | resource |
 | [aws_lakeformation_permissions.data_location_share](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions) | resource |
 | [aws_lakeformation_permissions.database_share](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions) | resource |
