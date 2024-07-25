@@ -66,6 +66,7 @@ resource "aws_lakeformation_permissions" "table_share_all" {
   depends_on = [aws_lakeformation_permissions.database_share]
 }
 
+
 resource "aws_lakeformation_permissions" "table_share_selected" {
   provider = aws.source
   for_each = {
@@ -86,11 +87,15 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
   depends_on = [aws_lakeformation_permissions.database_share]
 }
 
-resource "aws_glue_catalog_database" "target_account_database_resource_link" {
+resource "aws_glue_catalog_database" "target_database" {
   provider = aws.target
   for_each = {
     for db in var.databases_to_share : db.name => db
   }
+  name = each.key
+}
+resource "aws_glue_catalog_database" "target_account_database_resource_link" {
+
 
   name = "${each.key}_resource_link"
 
@@ -102,6 +107,7 @@ resource "aws_glue_catalog_database" "target_account_database_resource_link" {
 
   depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
 }
+
 
 resource "aws_glue_catalog_table" "target_account_table_resource_link" {
   provider = aws.target
