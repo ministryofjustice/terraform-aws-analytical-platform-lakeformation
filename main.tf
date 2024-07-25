@@ -54,8 +54,8 @@ resource "aws_lakeformation_permissions" "table_share_all" {
   }
 
   principal                     = data.aws_caller_identity.target.account_id
-  permissions                   = ["SELECT"]
-  permissions_with_grant_option = ["SELECT"]
+  permissions                   = each.value.share_all_tables_permissions
+  permissions_with_grant_option = each.value.share_all_tables_permissions
 
 
   table {

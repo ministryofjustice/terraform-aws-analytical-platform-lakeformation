@@ -35,7 +35,8 @@ variable "databases_to_share" {
   type = list(object({
     name             = string
     permissions      = optional(list(string), ["DESCRIBE"])
-    share_all_tables = optional(bool, true)
+    share_all_tables = optional(bool, true),
+    share_all_tables_permissions = optional(list(string), ["SELECT", "DESCRIBE"])
   }))
   default = []
 }
