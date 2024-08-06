@@ -7,6 +7,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 
 ## Providers
@@ -24,6 +25,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_glue_catalog_database.database_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
 | [aws_glue_catalog_database.target_account_database_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
 | [aws_glue_catalog_table.target_account_table_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_table) | resource |
 | [aws_lakeformation_permissions.data_location_share](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions) | resource |
@@ -40,8 +42,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_data_locations"></a> [data\_locations](#input\_data\_locations) | List of data locations (currently S3 buckets) to share with target account | <pre>list(object({<br>    data_location = string<br>    hybrid_mode   = optional(bool, null)<br>    register      = optional(bool, null)<br>    share         = optional(bool, true)<br>  }))</pre> | `[]` | no |
-| <a name="input_databases_to_share"></a> [databases\_to\_share](#input\_databases\_to\_share) | List of databases to share with target account | <pre>list(object({<br>    name             = string<br>    permissions      = optional(list(string), ["DESCRIBE"])<br>    share_all_tables = optional(bool, true)<br>  }))</pre> | `[]` | no |
-| <a name="input_tables_to_share"></a> [tables\_to\_share](#input\_tables\_to\_share) | List of tables to share with target account | <pre>list(object({<br>    database    = string<br>    name        = string<br>    target_db   = string<br>    target_tbl  = optional(string, null)<br>    permissions = optional(list(string), ["SELECT"])<br>  }))</pre> | `[]` | no |
+| <a name="input_databases_to_share"></a> [databases\_to\_share](#input\_databases\_to\_share) | List of databases to share with target account | <pre>list(object({<br>    name                         = string<br>    permissions                  = optional(list(string), ["DESCRIBE"])<br>    share_all_tables             = optional(bool, true),<br>    share_all_tables_permissions = optional(list(string), ["SELECT", "DESCRIBE"])<br>  }))</pre> | `[]` | no |
+| <a name="input_tables_to_share"></a> [tables\_to\_share](#input\_tables\_to\_share) | List of tables to share with target account | <pre>list(object({<br>    database    = string<br>    name        = string<br>    target_db   = string<br>    target_tbl  = optional(string, null)<br>    permissions = optional(list(string), ["SELECT", "DESCRIBE"])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
