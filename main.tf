@@ -54,8 +54,8 @@ resource "aws_lakeformation_permissions" "table_share_all" {
   }
 
   principal                     = data.aws_caller_identity.target.account_id
-  permissions                   = ["SELECT"]
-  permissions_with_grant_option = ["SELECT"]
+  permissions                   = each.value.share_all_tables_permissions
+  permissions_with_grant_option = each.value.share_all_tables_permissions
 
 
   table {
@@ -65,6 +65,7 @@ resource "aws_lakeformation_permissions" "table_share_all" {
 
   depends_on = [aws_lakeformation_permissions.database_share]
 }
+
 
 resource "aws_lakeformation_permissions" "table_share_selected" {
   provider = aws.source
@@ -84,6 +85,15 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
   }
 
   depends_on = [aws_lakeformation_permissions.database_share]
+}
+
+resource "aws_glue_catalog_database" "database_target" {
+  provider = aws.target
+  for_each = {
+    for db in var.databases_to_share : db.name => db
+  }
+
+  name = each.key
 }
 
 resource "aws_glue_catalog_database" "target_account_database_resource_link" {
