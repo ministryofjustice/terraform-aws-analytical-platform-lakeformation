@@ -95,6 +95,7 @@ resource "aws_glue_catalog_database" "database_target" {
 
   name = each.key
 }
+
 resource "aws_glue_catalog_database" "target_account_database_resource_link" {
   provider = aws.target
   for_each = {
@@ -111,7 +112,6 @@ resource "aws_glue_catalog_database" "target_account_database_resource_link" {
 
   depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
 }
-
 
 resource "aws_glue_catalog_table" "target_account_table_resource_link" {
   provider = aws.target
