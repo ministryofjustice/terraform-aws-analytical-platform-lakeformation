@@ -88,7 +88,7 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
 }
 
 resource "aws_glue_catalog_database" "database_target" {
-    provider = aws.target
+  provider = aws.target
   for_each = {
     for db in var.databases_to_share : db.name => db
   }
