@@ -93,7 +93,7 @@ resource "aws_glue_catalog_database" "database_target" {
     for db in var.databases_to_share : db.name => db
   }
 
-  name = each.key
+  name = "${each.key}_target_database"
 }
 
 resource "aws_glue_catalog_database" "target_account_database_resource_link" {
