@@ -119,8 +119,8 @@ resource "aws_glue_catalog_table" "destination_account_table_resource_link" {
     for tbl in var.tables_to_share : tbl.source_table => tbl
   }
 
-  name          = try(each.value.resource_link_table_name, "${each.key}_resource_link") # what to name the resoruce link in the destintion account
-  database_name = each.value.destination_database.database_name                         # what database to place the resource link into
+  name          = try(each.value.resource_link_name, "${each.key}_resource_link") # what to name the resoruce link in the destintion account
+  database_name = each.value.destination_database                                 # what database to place the resource link into
   target_table {
     name          = each.key # the shared database
     catalog_id    = data.aws_caller_identity.current.account_id

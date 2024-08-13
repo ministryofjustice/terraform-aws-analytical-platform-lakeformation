@@ -8,7 +8,7 @@ In the Analytical Platform we use this to manage resource access for DPR and AWS
 
 ## Terminology
 
-The module uses the terms 'source' and 'destination' when referring to AWS Accounts which resources are shared to and from. 
+The module uses the terms 'source' and 'destination' when referring to AWS Accounts which resources are shared to and from.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
