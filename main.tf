@@ -104,7 +104,7 @@ resource "aws_glue_catalog_database" "destination_account_database_resource_link
 
   name = "${each.key}_resource_link"
 
-  destination_database {
+  target_database {
     catalog_id    = data.aws_caller_identity.current.account_id
     database_name = each.key
     region        = data.aws_region.current.name
@@ -121,7 +121,7 @@ resource "aws_glue_catalog_table" "destination_account_table_resource_link" {
 
   name          = try(each.value.resource_link_table_name, "${each.key}_resource_link") # what to name the resoruce link in the destintion account
   database_name = each.value.destination_database                                       # what database to place the resource link into
-  destination_table {
+  target_table {
     name          = each.key # the shared database
     catalog_id    = data.aws_caller_identity.current.account_id
     database_name = each.value.source_database # shared database
