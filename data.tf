@@ -7,8 +7,8 @@ data "aws_region" "current" {
   provider = aws.source
 }
 
-data "aws_caller_identity" "target" {
-  provider = aws.target
+data "aws_caller_identity" "destination" {
+  provider = aws.destination
 }
 
 # data "aws_iam_session_context" "target" {

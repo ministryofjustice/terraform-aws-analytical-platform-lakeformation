@@ -1,5 +1,5 @@
 variable "data_locations" {
-  description = "List of data locations (currently S3 buckets) to share with target account"
+  description = "List of data locations (currently S3 buckets) to share with destination account"
   type = list(object({
     data_location = string
     hybrid_mode   = optional(bool, null)
@@ -31,7 +31,7 @@ variable "data_locations" {
 # }
 
 variable "databases_to_share" {
-  description = "List of databases to share with target account"
+  description = "List of databases to share with destination account"
   type = list(object({
     name                         = string
     permissions                  = optional(list(string), ["DESCRIBE"])
@@ -42,13 +42,21 @@ variable "databases_to_share" {
 }
 
 variable "tables_to_share" {
-  description = "List of tables to share with target account"
+  description = <<EOF
+  List of tables to share with destination account.
+  If the user is NOT creating a new destination_database,
+  (i.e. providing an existing database),
+  the database must exist or execution will fail silently.
+  EOF
   type = list(object({
-    database    = string
-    name        = string
-    target_db   = string
-    target_tbl  = optional(string, null)
-    permissions = optional(list(string), ["SELECT", "DESCRIBE"])
+    source_database          = string
+    resource_link_table_name = optional(string, null)
+    destination_database = object({
+      database_name   = string
+      create_database = bool
+    })
+    source_table = string
+    permissions  = optional(list(string), ["SELECT", "DESCRIBE"])
   }))
   default = []
 }
