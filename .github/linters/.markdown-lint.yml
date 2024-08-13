@@ -6,4 +6,4 @@ MD013:
 MD033:
   allowed_elements: ['br', 'a', 'pre']
 MD018:
-  no-missing-space-atx: true
+  no-missing-space-atx: false
