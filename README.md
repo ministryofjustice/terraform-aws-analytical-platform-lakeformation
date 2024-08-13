@@ -43,7 +43,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_data_locations"></a> [data\_locations](#input\_data\_locations) | List of data locations (currently S3 buckets) to share with target account | <pre>list(object({<br>    data_location = string<br>    hybrid_mode   = optional(bool, null)<br>    register      = optional(bool, null)<br>    share         = optional(bool, true)<br>  }))</pre> | `[]` | no |
 | <a name="input_databases_to_share"></a> [databases\_to\_share](#input\_databases\_to\_share) | List of databases to share with target account | <pre>list(object({<br>    name                         = string<br>    permissions                  = optional(list(string), ["DESCRIBE"])<br>    share_all_tables             = optional(bool, true),<br>    share_all_tables_permissions = optional(list(string), ["SELECT", "DESCRIBE"])<br>  }))</pre> | `[]` | no |
-| <a name="input_tables_to_share"></a> [tables\_to\_share](#input\_tables\_to\_share) | List of tables to share with target account | <pre>list(object({<br>    source_database      = string<br>    resource_link_name   = optional(string, null)<br>    destination_database = string<br>    source_table         = string<br>    permissions          = optional(list(string), ["SELECT", "DESCRIBE"])<br>  }))</pre> | `[]` | no |
+| <a name="input_tables_to_share"></a> [tables\_to\_share](#input\_tables\_to\_share) | List of tables to share with target account | <pre>list(object({<br>    source_database          = string<br>    resource_link_table_name = optional(string, null)<br>    destination_database     = string<br>    source_table             = string<br>    permissions              = optional(list(string), ["SELECT", "DESCRIBE"])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

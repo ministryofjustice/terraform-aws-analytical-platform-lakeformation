@@ -80,8 +80,8 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
 
 
   table {
-    database_name = each.value.database
-    name          = each.value.name
+    database_name = each.value.source_database
+    name          = each.value.source_table
   }
 
   depends_on = [aws_lakeformation_permissions.database_share]
