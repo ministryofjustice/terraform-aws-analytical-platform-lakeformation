@@ -44,11 +44,11 @@ variable "databases_to_share" {
 variable "tables_to_share" {
   description = "List of tables to share with target account"
   type = list(object({
-    database    = string
-    name        = string
-    target_db   = string
-    target_tbl  = optional(string, null)
-    permissions = optional(list(string), ["SELECT", "DESCRIBE"])
+    source_database      = string
+    resource_link_name   = optional(string, null)
+    destination_database = string
+    source_table         = string
+    permissions          = optional(list(string), ["SELECT", "DESCRIBE"])
   }))
   default = []
 }
