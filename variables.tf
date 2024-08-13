@@ -46,9 +46,12 @@ variable "tables_to_share" {
   type = list(object({
     source_database          = string
     resource_link_table_name = optional(string, null)
-    destination_database     = string
-    source_table             = string
-    permissions              = optional(list(string), ["SELECT", "DESCRIBE"])
+    destination_database = object({
+      database_name   = string
+      create_database = bool
+    })
+    source_table = string
+    permissions  = optional(list(string), ["SELECT", "DESCRIBE"])
   }))
   default = []
 }
