@@ -93,7 +93,7 @@ resource "aws_glue_catalog_database" "destination_database" {
     for tbl in var.tables_to_share : tbl.source_name => tbl if tbl.destination_database.create_database
   }
 
-  name = "${each.value.destination_database.database_name}_destination_database" # this will still be suffixed because if there's a database that exists with the same name, terraform will fail silently.
+  name = each.value.destination_database.database_name
 }
 
 resource "aws_glue_catalog_database" "destination_account_database_resource_link" {

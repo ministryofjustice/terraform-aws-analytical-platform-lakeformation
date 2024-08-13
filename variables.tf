@@ -42,7 +42,12 @@ variable "databases_to_share" {
 }
 
 variable "tables_to_share" {
-  description = "List of tables to share with destination account"
+  description = <<EOF
+  List of tables to share with destination account.
+  If the user is NOT creating a new destination_database,
+  (i.e. providing an existing database),
+  the database must exist or execution will fail silently.
+  EOF
   type = list(object({
     source_database          = string
     resource_link_table_name = optional(string, null)
