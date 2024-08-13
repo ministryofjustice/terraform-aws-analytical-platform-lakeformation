@@ -18,7 +18,7 @@ resource "aws_lakeformation_permissions" "data_location_share" {
     if loc.share && local.share_cross_account #no need to share data location if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.target.account_id
+  principal                     = data.aws_caller_identity.destination.account_id
   permissions                   = ["DATA_LOCATION_ACCESS"]
   permissions_with_grant_option = ["DATA_LOCATION_ACCESS"]
 
@@ -35,7 +35,7 @@ resource "aws_lakeformation_permissions" "database_share" {
     if local.share_cross_account #no need to share database if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.target.account_id
+  principal                     = data.aws_caller_identity.destination.account_id
   permissions                   = each.value.permissions
   permissions_with_grant_option = each.value.permissions
 
@@ -53,7 +53,7 @@ resource "aws_lakeformation_permissions" "table_share_all" {
     if local.share_cross_account && db.share_all_tables #no need to share table if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.target.account_id
+  principal                     = data.aws_caller_identity.destination.account_id
   permissions                   = each.value.share_all_tables_permissions
   permissions_with_grant_option = each.value.share_all_tables_permissions
 
@@ -74,7 +74,7 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
     if local.share_cross_account #no need to share table if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.target.account_id
+  principal                     = data.aws_caller_identity.destination.account_id
   permissions                   = each.value.permissions
   permissions_with_grant_option = each.value.permissions
 
@@ -87,24 +87,24 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
   depends_on = [aws_lakeformation_permissions.database_share]
 }
 
-resource "aws_glue_catalog_database" "database_target" {
-  provider = aws.target
+resource "aws_glue_catalog_database" "destination_database" {
+  provider = aws.destination
   for_each = {
     for db in var.databases_to_share : db.name => db
   }
 
-  name = "${each.key}_target_database"
+  name = "${each.key}_destination_database"
 }
 
-resource "aws_glue_catalog_database" "target_account_database_resource_link" {
-  provider = aws.target
+resource "aws_glue_catalog_database" "destination_account_database_resource_link" {
+  provider = aws.destination
   for_each = {
     for db in var.databases_to_share : db.name => db
   }
 
   name = "${each.key}_resource_link"
 
-  target_database {
+  destination_database {
     catalog_id    = data.aws_caller_identity.current.account_id
     database_name = each.key
     region        = data.aws_region.current.name
@@ -113,15 +113,15 @@ resource "aws_glue_catalog_database" "target_account_database_resource_link" {
   depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
 }
 
-resource "aws_glue_catalog_table" "target_account_table_resource_link" {
-  provider = aws.target
+resource "aws_glue_catalog_table" "destination_account_table_resource_link" {
+  provider = aws.destination
   for_each = {
     for tbl in var.tables_to_share : tbl.source_table => tbl
   }
 
   name          = try(each.value.resource_link_table_name, "${each.key}_resource_link") # what to name the resoruce link in the destintion account
   database_name = each.value.destination_database                                       # what database to place the resource link into
-  target_table {
+  destination_table {
     name          = each.key # the shared database
     catalog_id    = data.aws_caller_identity.current.account_id
     database_name = each.value.source_database # shared database
