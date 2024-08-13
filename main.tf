@@ -70,7 +70,7 @@ resource "aws_lakeformation_permissions" "table_share_all" {
 resource "aws_lakeformation_permissions" "table_share_selected" {
   provider = aws.source
   for_each = {
-    for tbl in var.tables_to_share : tbl.name => tbl
+    for tbl in var.tables_to_share : tbl.source_table => tbl
     if local.share_cross_account #no need to share table if it's in the same account
   }
 
