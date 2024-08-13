@@ -90,7 +90,7 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
 resource "aws_glue_catalog_database" "destination_database" {
   provider = aws.destination
   for_each = {
-    for db in var.databases_to_share : db.name => db if db.destination_database.create_database
+    for tbl in var.tables_to_share : tbl.source_name => tbl if tbl.destination_database.create_database
   }
 
   name = "${each.value.destination_database.database_name}_destination_database" # this will still be suffixed because if there's a database that exists with the same name, terraform will fail silently.
@@ -120,7 +120,7 @@ resource "aws_glue_catalog_table" "destination_account_table_resource_link" {
   }
 
   name          = try(each.value.resource_link_table_name, "${each.key}_resource_link") # what to name the resoruce link in the destintion account
-  database_name = each.value.destination_database                                       # what database to place the resource link into
+  database_name = each.value.destination_database.database_name                         # what database to place the resource link into
   target_table {
     name          = each.key # the shared database
     catalog_id    = data.aws_caller_identity.current.account_id
