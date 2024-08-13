@@ -90,7 +90,7 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
 resource "aws_glue_catalog_database" "destination_database" {
   provider = aws.destination
   for_each = {
-    for tbl in var.tables_to_share : tbl.source_name => tbl if tbl.destination_database.create_database
+    for tbl in var.tables_to_share : tbl.source_table => tbl if tbl.destination_database.create_database
   }
 
   name = each.value.destination_database.database_name
