@@ -11,20 +11,19 @@ In the Analytical Platform we use this to manage resource access for DPR and AWS
 The module uses the terms 'source' and 'destination' when referring to AWS Accounts which resources are shared to and from.
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
-| Name                                                                     | Version |
-| ------------------------------------------------------------------------ | ------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | ~> 1.0  |
-| <a name="requirement_aws"></a> [aws](#requirement_aws)                   | ~> 5.0  |
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 
 ## Providers
 
-| Name                                                                                 | Version |
-| ------------------------------------------------------------------------------------ | ------- |
-| <a name="provider_aws.destination"></a> [aws.destination](#provider_aws.destination) | ~> 5.0  |
-| <a name="provider_aws.source"></a> [aws.source](#provider_aws.source)                | ~> 5.0  |
+| Name | Version |
+|------|---------|
+| <a name="provider_aws.destination"></a> [aws.destination](#provider\_aws.destination) | ~> 5.0 |
+| <a name="provider_aws.source"></a> [aws.source](#provider\_aws.source) | ~> 5.0 |
 
 ## Modules
 
@@ -32,30 +31,29 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                                                                      | Type        |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [aws_glue_catalog_database.destination_account_database_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource    |
-| [aws_glue_catalog_database.destination_database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database)                       | resource    |
-| [aws_glue_catalog_table.destination_account_table_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_table)          | resource    |
-| [aws_lakeformation_permissions.data_location_share](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions)                | resource    |
-| [aws_lakeformation_permissions.database_share](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions)                     | resource    |
-| [aws_lakeformation_permissions.table_share_all](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions)                    | resource    |
-| [aws_lakeformation_permissions.table_share_selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions)               | resource    |
-| [aws_lakeformation_resource.data_location](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_resource)                            | resource    |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)                                             | data source |
-| [aws_caller_identity.destination](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)                                         | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region)                                                               | data source |
+| Name | Type |
+|------|------|
+| [aws_glue_catalog_database.destination_account_database_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
+| [aws_glue_catalog_database.destination_database](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_database) | resource |
+| [aws_glue_catalog_table.destination_account_table_resource_link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/glue_catalog_table) | resource |
+| [aws_lakeformation_permissions.data_location_share](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions) | resource |
+| [aws_lakeformation_permissions.database_share](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions) | resource |
+| [aws_lakeformation_permissions.table_share_all](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions) | resource |
+| [aws_lakeformation_permissions.table_share_selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_permissions) | resource |
+| [aws_lakeformation_resource.data_location](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lakeformation_resource) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_caller_identity.destination](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
-| Name                                                                                    | Description                                                                                                                                                                                                           | Type                                                                                                                                                                                                                                                                                                            | Default | Required |
-| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | :------: |
-| <a name="input_data_locations"></a> [data_locations](#input_data_locations)             | List of data locations (currently S3 buckets) to share with destination account                                                                                                                                       | <pre>list(object({<br> data_location = string<br> hybrid_mode = optional(bool, null)<br> register = optional(bool, null)<br> share = optional(bool, true)<br> }))</pre>                                                                                                                                         | `[]`    |    no    |
-| <a name="input_databases_to_share"></a> [databases_to_share](#input_databases_to_share) | List of databases to share with destination account                                                                                                                                                                   | <pre>list(object({<br> name = string<br> permissions = optional(list(string), ["DESCRIBE"])<br> share_all_tables = optional(bool, true),<br> share_all_tables_permissions = optional(list(string), ["SELECT", "DESCRIBE"])<br> }))</pre>                                                                        | `[]`    |    no    |
-| <a name="input_tables_to_share"></a> [tables_to_share](#input_tables_to_share)          | List of tables to share with destination account.<br> If the user is NOT creating a new destination_database,<br> (i.e. providing an existing database),<br> the database must exist or execution will fail silently. | <pre>list(object({<br> source_database = string<br> resource_link_table_name = optional(string, null)<br> destination_database = object({<br> database_name = string<br> create_database = bool<br> })<br> source_table = string<br> permissions = optional(list(string), ["SELECT", "DESCRIBE"])<br> }))</pre> | `[]`    |    no    |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_data_locations"></a> [data\_locations](#input\_data\_locations) | List of data locations (currently S3 buckets) to share with destination account | <pre>list(object({<br>    data_location = string<br>    hybrid_mode   = optional(bool, null)<br>    register      = optional(bool, null)<br>    share         = optional(bool, true)<br>  }))</pre> | `[]` | no |
+| <a name="input_databases_to_share"></a> [databases\_to\_share](#input\_databases\_to\_share) | List of databases to share with destination account | <pre>list(object({<br>    name                         = string<br>    permissions                  = optional(list(string), ["DESCRIBE"])<br>    share_all_tables             = optional(bool, true),<br>    share_all_tables_permissions = optional(list(string), ["SELECT", "DESCRIBE"])<br>  }))</pre> | `[]` | no |
+| <a name="input_tables_to_share"></a> [tables\_to\_share](#input\_tables\_to\_share) | List of tables to share with destination account.<br>  If the user is NOT creating a new destination\_database,<br>  (i.e. providing an existing database),<br>  the database must exist or execution will fail silently. | <pre>list(object({<br>    source_database          = string<br>    resource_link_table_name = optional(string, null)<br>    destination_database = object({<br>      database_name   = string<br>      create_database = bool<br>    })<br>    source_table = string<br>    permissions  = optional(list(string), ["SELECT", "DESCRIBE"])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
 No outputs.
-
 <!-- END_TF_DOCS -->
