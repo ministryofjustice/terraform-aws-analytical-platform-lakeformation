@@ -4,4 +4,4 @@ MD024:
 MD013:
   line_length: 700
 MD033:
-  allowed_elements: ['br', 'a', 'pre']
+  allowed_elements: ["br", "a", "pre"]
