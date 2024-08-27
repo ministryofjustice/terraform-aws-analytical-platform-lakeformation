@@ -1,1 +1,4 @@
 .devcontainer/devcontainer-lock.json
+.github/linters/.markdown-lint.yml
+.github/workflows/documentation.yml
+README.md
