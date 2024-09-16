@@ -111,6 +111,12 @@ resource "aws_glue_catalog_database" "destination_account_database_resource_link
   }
 
   depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
+  lifecycle {
+    ignore_changes = [
+      # Change to description  require alter permissions which aren't typicically granted or needed
+      description
+    ]
+  }
 }
 
 resource "aws_glue_catalog_table" "destination_account_table_resource_link" {
@@ -126,6 +132,13 @@ resource "aws_glue_catalog_table" "destination_account_table_resource_link" {
     catalog_id    = data.aws_caller_identity.source.account_id
     database_name = each.value.source_database # shared database
     region        = data.aws_region.source.name
+  }
+
+  lifecycle {
+    ignore_changes = [
+      # Change to description  require alter permissions which aren't typicically granted or needed
+      description
+    ]
   }
 
   depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
