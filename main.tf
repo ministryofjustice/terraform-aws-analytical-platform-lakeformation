@@ -114,7 +114,7 @@ resource "aws_glue_catalog_database" "destination_account_database_resource_link
   lifecycle {
     ignore_changes = [
       # Change to description  require alter permissions which aren't typicically granted or needed
-      descripton
+      description
     ]
   }
 }
@@ -137,7 +137,7 @@ resource "aws_glue_catalog_table" "destination_account_table_resource_link" {
   lifecycle {
     ignore_changes = [
       # Change to description  require alter permissions which aren't typicically granted or needed
-      descripton
+      description
     ]
   }
 
