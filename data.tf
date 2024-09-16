@@ -1,9 +1,9 @@
 
-data "aws_caller_identity" "current" {
+data "aws_caller_identity" "source" {
   provider = aws.source
 }
 
-data "aws_region" "current" {
+data "aws_region" "source" {
   provider = aws.source
 }
 

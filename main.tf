@@ -105,9 +105,9 @@ resource "aws_glue_catalog_database" "destination_account_database_resource_link
   name = "${each.key}_resource_link"
 
   target_database {
-    catalog_id    = data.aws_caller_identity.current.account_id
+    catalog_id    = data.aws_caller_identity.source.account_id
     database_name = each.key
-    region        = data.aws_region.current.name
+    region        = data.aws_region.source.name
   }
 
   depends_on = [aws_lakeformation_permissions.table_share_all, aws_lakeformation_permissions.table_share_selected]
