@@ -41,6 +41,12 @@ variable "databases_to_share" {
   default = []
 }
 
+variable "destination_role" {
+  description = "Optional role to use as destination instead of an account"
+  type = string
+  default = null
+}
+
 variable "tables_to_share" {
   description = <<EOF
   List of tables to share with destination account.

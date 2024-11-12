@@ -1,3 +1,7 @@
+locals {
+  destination_principle = var.destination_role = null ? data.aws_caller_identity.destination.account_id : var.destination_role  
+}
+
 resource "aws_lakeformation_resource" "data_location" {
   provider = aws.source
   for_each = {
@@ -18,7 +22,7 @@ resource "aws_lakeformation_permissions" "data_location_share" {
     if loc.share && local.share_cross_account #no need to share data location if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = local.destination_principle
   permissions                   = ["DATA_LOCATION_ACCESS"]
   permissions_with_grant_option = ["DATA_LOCATION_ACCESS"]
 
@@ -35,7 +39,7 @@ resource "aws_lakeformation_permissions" "database_share" {
     if local.share_cross_account #no need to share database if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = local.destination_principle
   permissions                   = each.value.permissions
   permissions_with_grant_option = each.value.permissions
 
@@ -53,7 +57,7 @@ resource "aws_lakeformation_permissions" "table_share_all" {
     if local.share_cross_account && db.share_all_tables #no need to share table if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = local.destination_principle
   permissions                   = each.value.share_all_tables_permissions
   permissions_with_grant_option = each.value.share_all_tables_permissions
 
@@ -74,7 +78,7 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
     if local.share_cross_account #no need to share table if it's in the same account
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = local.principle_destination
   permissions                   = each.value.permissions
   permissions_with_grant_option = each.value.permissions
 
