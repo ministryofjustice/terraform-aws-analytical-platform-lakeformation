@@ -16,14 +16,14 @@ The module uses the terms 'source' and 'destination' when referring to AWS Accou
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws.destination"></a> [aws.destination](#provider\_aws.destination) | ~> 5.0 |
-| <a name="provider_aws.source"></a> [aws.source](#provider\_aws.source) | ~> 5.0 |
+| <a name="provider_aws.destination"></a> [aws.destination](#provider\_aws.destination) | ~> 6.0 |
+| <a name="provider_aws.source"></a> [aws.source](#provider\_aws.source) | ~> 6.0 |
 
 ## Modules
 
