@@ -15,10 +15,10 @@ resource "aws_lakeformation_permissions" "data_location_share" {
   provider = aws.source
   for_each = {
     for idx, loc in var.data_locations : loc.data_location => loc
-    if loc.share && local.share_cross_account #no need to share data location if it's in the same account
+    if(loc.share && local.share_cross_account) || loc.principal != null
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = try(each.value.principal, data.aws_caller_identity.destination.account_id)
   permissions                   = ["DATA_LOCATION_ACCESS"]
   permissions_with_grant_option = ["DATA_LOCATION_ACCESS"]
 
@@ -32,10 +32,10 @@ resource "aws_lakeformation_permissions" "database_share" {
   provider = aws.source
   for_each = {
     for db in var.databases_to_share : db.name => db
-    if local.share_cross_account #no need to share database if it's in the same account
+    if local.share_cross_account || loc.principal != null
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = try(each.value.principal, data.aws_caller_identity.destination.account_id)
   permissions                   = each.value.permissions
   permissions_with_grant_option = each.value.permissions
 
@@ -50,10 +50,10 @@ resource "aws_lakeformation_permissions" "table_share_all" {
   provider = aws.source
   for_each = {
     for db in var.databases_to_share : db.name => db
-    if local.share_cross_account && db.share_all_tables #no need to share table if it's in the same account
+    if(local.share_cross_account && db.share_all_tables) || loc.principal != null
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = try(each.value.principal, data.aws_caller_identity.destination.account_id)
   permissions                   = each.value.share_all_tables_permissions
   permissions_with_grant_option = each.value.share_all_tables_permissions
 
@@ -71,10 +71,10 @@ resource "aws_lakeformation_permissions" "table_share_selected" {
   provider = aws.source
   for_each = {
     for tbl in var.tables_to_share : tbl.source_table => tbl
-    if local.share_cross_account #no need to share table if it's in the same account
+    if local.share_cross_account || loc.principal != null
   }
 
-  principal                     = data.aws_caller_identity.destination.account_id
+  principal                     = try(each.value.principal, data.aws_caller_identity.destination.account_id)
   permissions                   = each.value.permissions
   permissions_with_grant_option = each.value.permissions
 
