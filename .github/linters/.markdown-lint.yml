@@ -6,4 +6,3 @@ MD013:
 MD033:
   allowed_elements: ["br", "a", "pre"]
 MD060: false
-
