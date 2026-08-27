@@ -1,10 +1,15 @@
 variable "data_locations" {
-  description = "List of data locations (currently S3 buckets) to share with destination account"
+  description = <<EOF
+  List of data locations (currently S3 buckets) to share with destination account
+  Note: if specifying a principal, it must be in the destination account or the sharing
+  will fail.
+  EOF
   type = list(object({
     data_location = string
     hybrid_mode   = optional(bool, null)
     register      = optional(bool, null)
     share         = optional(bool, true)
+    principal     = optional(string, null)
   }))
   default = []
 
@@ -19,22 +24,16 @@ variable "data_locations" {
   }
 }
 
-# variable "lake_formation_settings" {
-#   description = "Map of Lake Formation settings to configure as part of the sharing"
-#   type = object({
-#     data_lake_admins                         = optional(list(string),[]) # role running the terraform in will be added as an admin automatically
-#     iam_manage_new_databases = optional(bool, false)
-#     iam_manage_new_tables    = optional(bool, false)
-#     trusted_resource_owners                  = optional(list(string))
-#   })
-#   default = {}
-# }
-
 variable "databases_to_share" {
-  description = "List of databases to share with destination account"
+  description = <<EOF
+  List of databases to share with destination account.
+  Note: if specifying a principal, it must be in the
+  destination account or the sharing will fail.
+  EOF
   type = list(object({
     name                         = string
     permissions                  = optional(list(string), ["DESCRIBE"])
+    principal                    = optional(string, null)
     share_all_tables             = optional(bool, true),
     share_all_tables_permissions = optional(list(string), ["SELECT", "DESCRIBE"])
   }))
@@ -44,6 +43,8 @@ variable "databases_to_share" {
 variable "tables_to_share" {
   description = <<EOF
   List of tables to share with destination account.
+  Note: if specifying a principal, it must be in the
+  destination account or the sharing will fail.
   If the user is NOT creating a new destination_database,
   (i.e. providing an existing database),
   the database must exist or execution will fail silently.
@@ -51,6 +52,7 @@ variable "tables_to_share" {
   type = list(object({
     source_database          = string
     resource_link_table_name = optional(string, null)
+    principal                = optional(string, null)
     destination_database = object({
       database_name   = string
       create_database = bool
